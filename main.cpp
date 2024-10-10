@@ -1,22 +1,19 @@
 #include <string_view>
 #include <iostream>
 #include <array>
-#include "Lexer.h"
+#include "Parser.h"
 
 bool parseAndPrint(std::string_view json)
 {
-   Lexer lex(json);
+   Parser parser(json);
 
     std::cout << "Starting parsing of: " << json << std::endl;
+    
+    auto ast = parser.getAST();
 
-    Token token = lex.getNextToken();
-    while (token.kind != TokenKind::EndOfFile)
-    {
-        std::cout << "Got token: " << token.lexem << std::endl;
-        //par.putToken(token);
-        token = lex.getNextToken();
-    }
-
+    std::cout << "Traversing the AST:" << std::endl;
+    parser.traverseAST(ast.get());
+    
     return true;
 }
 
